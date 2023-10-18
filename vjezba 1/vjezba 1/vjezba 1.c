@@ -12,7 +12,7 @@ int main() {
 	int noRows = 0;
 	FILE* filePointer = NULL;
 	char buffer[MAX_LINE] = { 0 };
-	filePointer = fopen("students.txt", "r");
+	filePointer = fopen("l.txt.txt", "r");
 	if (!filePointer) {
 		printf("klrivo");
 		return -1;
