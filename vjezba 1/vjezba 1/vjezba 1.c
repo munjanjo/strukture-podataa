@@ -26,5 +26,6 @@ int main() {
 	}
 	printf("%d", noRows);
 	fclose(filePointer);
+	return 0;
 
 }
