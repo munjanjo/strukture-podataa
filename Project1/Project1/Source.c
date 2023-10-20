@@ -25,13 +25,14 @@ int main() {
 
 
 	}
-	
+	rewind(filePointer);
 	Student* stud = NULL;
 	stud = (Student *)malloc(noRows * sizeof(Student));
 	for (int i = 0; i < noRows; i++) {
-		fscanf(filePointer, "%s %s %d\n", (stud + i)->name, (stud + i)->surname, &(stud + i)->points);
+		fscanf(filePointer, "%s %s %d\n", stud[i].name, stud[i].surname, &stud[i].points);
 	
 	}
+	
 	double prosjek=0;
 	for (int i = 0; i < noRows; i++) {
 		prosjek = (double)stud[i].points / 50 * 100;
