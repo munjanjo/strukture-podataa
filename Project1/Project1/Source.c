@@ -7,7 +7,7 @@
 typedef struct _student {
 	char name[MAX_SIZE];
 	char surname[MAX_SIZE];
-	double points;
+	int points;
 }Student;
 int main() {
 	int noRows = 0;
@@ -25,9 +25,20 @@ int main() {
 
 
 	}
-	printf("%d", noRows);
+	
+	Student* stud = NULL;
+	stud = (Student *)malloc(noRows * sizeof(Student));
+	for (int i = 0; i < noRows; i++) {
+		fscanf(filePointer, "%s %s %d\n", (stud + i)->name, (stud + i)->surname, &(stud + i)->points);
+	
+	}
+	double prosjek=0;
+	for (int i = 0; i < noRows; i++) {
+		prosjek = (double)stud[i].points / 50 * 100;
+		printf("%s %s %d %.2lf %\n", stud[i].name, stud[i].surname, stud[i].points, prosjek);
+	}
+	
 	fclose(filePointer);
-	filePointer = malloc(noRows * sizeof(Student));
 	return 0;
 
 }
