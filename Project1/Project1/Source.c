@@ -40,6 +40,7 @@ int main() {
 	}
 	
 	fclose(filePointer);
+	free(stud);
 	return 0;
 
 }
