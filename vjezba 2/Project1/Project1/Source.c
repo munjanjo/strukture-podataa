@@ -68,6 +68,7 @@ int main() {
 			"Unesi C za(dinamicki dodati novi element na kraj liste)\n"
 			"Unesi D za(trazenje element u listi (po prezimenu))\n"
 			"Unesi E za(brisanje odredenog elementa iz liste)\n"
+			"Unesi G za(dodavanje nakon nekog elementa)\n"
 			"Unesi F za kraj\n");
 
 		scanf(" %c", &znak);
@@ -177,6 +178,12 @@ osoba* AddAfterSomeone(osoba* people) {
 	printf("unesi prezime iza kojega zelis unijeti novi clan:");
 	char temp[MAX_SIZE];
 	scanf("%s", temp);
+	printf("Unesite Ime osobe\n");
+	scanf("%s", new->name);
+	printf("Unesite Prezime osobe\n");
+	scanf("%s", new->surname);
+	printf("Unesite Godiste osobe\n");
+	scanf("%d", &new->year);
 	while (people->next != NULL) {
 		if (!strcmp(temp, people->surname)) {
 			new->next = people->next;
