@@ -1,4 +1,4 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,6 +16,7 @@ void PrintList(osoba* people);
 osoba* AddAtEnd(osoba* people);
 void SearchBySurname(osoba* people);
 void Delete(osoba* people);
+osoba* AddAfterSomeone(osoba* people);
 
 int main() {
 	osoba* people = NULL;
@@ -25,6 +26,7 @@ int main() {
 		"Unesi C za(dinamicki dodati novi element na kraj liste)\n"
 		"Unesi D za(trazenje element u listi (po prezimenu))\n"
 		"Unesi E za(brisanje odredenog elementa iz liste)\n"
+		"Unesi G za(dodavanje nakon nekog elementa)\n"
 		"Unesi F za kraj\n");
 
 	scanf("%c", &znak);
@@ -51,6 +53,11 @@ int main() {
 		case 'e':
 			Delete(people);
 			break;
+		case 'G':
+		case 'g':
+			AddAfterSomeone(people);
+			break;
+		
 
 		default:
 			break;
@@ -164,4 +171,22 @@ void Delete(osoba* people) {
 		brojac++;
 	}
 	printf("Dali ste nepostojeci indeks\n");
+}
+osoba* AddAfterSomeone(osoba* people) {
+	osoba* new = (osoba*)malloc(sizeof(osoba));
+	printf("unesi prezime iza kojega zelis unijeti novi clan:");
+	char temp[MAX_SIZE];
+	scanf("%s", temp);
+	while (people->next != NULL) {
+		if (!strcmp(temp, people->surname)) {
+			new->next = people->next;
+			people->next = new;
+			return;
+		}
+		people = people->next;
+
+	}
+
+
+
 }
