@@ -55,9 +55,9 @@ int main() {
 			break;
 		case 'G':
 		case 'g':
-			AddAfterSomeone(people);
+			people=AddAfterSomeone(people);
 			break;
-		
+
 
 		default:
 			break;
@@ -175,24 +175,30 @@ void Delete(osoba* people) {
 }
 osoba* AddAfterSomeone(osoba* people) {
 	osoba* new = (osoba*)malloc(sizeof(osoba));
+	osoba* all = people;
 	printf("unesi prezime iza kojega zelis unijeti novi clan:");
-	char temp[MAX_SIZE];
-	scanf("%s", temp);
+	char temp[MAX_SIZE] = { 0 };
+	scanf("%s",temp);
+	printf("\n%s", temp);
 	printf("Unesite Ime osobe\n");
 	scanf("%s", new->name);
 	printf("Unesite Prezime osobe\n");
 	scanf("%s", new->surname);
 	printf("Unesite Godiste osobe\n");
 	scanf("%d", &new->year);
-	while (people->next != NULL) {
-		if (!strcmp(temp, people->surname)) {
+	while (people != NULL) {
+		if (strcmp(people->surname,temp)==0) {
+		
 			new->next = people->next;
 			people->next = new;
-			return;
+			return all;
 		}
 		people = people->next;
 
 	}
+	printf("\nne potoji to prezime");
+	return all;
+	
 
 
 
