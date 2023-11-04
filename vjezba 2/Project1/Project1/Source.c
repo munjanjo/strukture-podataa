@@ -3,23 +3,27 @@
 #include <stdlib.h>
 #include <string.h>
 #define MAX_SIZE 50
-
-typedef struct _osoba {
+typedef struct _osoba osoba;
+typedef osoba* pozicija;
+struct _osoba {
 	char name[MAX_SIZE];
 	char surname[MAX_SIZE];
 	int year;
-	struct _osoba* next;
-}osoba;
+	osoba* next;
+};
 
-osoba* AddAtBeggining(osoba* people);
+osoba* AddAtBeggining(pozicija people);
 void PrintList(osoba* people);
-osoba* AddAtEnd(osoba* people);
+pozicija AddAtEnd(osoba* pozicija);
 void SearchBySurname(osoba* people);
 void Delete(osoba* people);
 osoba* AddAfterSomeone(osoba* people);
+osoba* AddBeforeSomeone(osoba* people);
 
 int main() {
-	osoba* people = NULL;
+	pozicija head = NULL;
+	head = (pozicija)malloc(sizeof(osoba));
+	head->next = NULL;
 	char znak = NULL;
 	printf("Unesi A za(dodati novi element na pocetak liste)\n"
 		"Unesi B za(ispis liste)\n"
@@ -27,6 +31,7 @@ int main() {
 		"Unesi D za(trazenje element u listi (po prezimenu))\n"
 		"Unesi E za(brisanje odredenog elementa iz liste)\n"
 		"Unesi G za(dodavanje nakon nekog elementa)\n"
+		"Unesi H za(dodavanje prije nekog odredenog)\n"
 		"Unesi F za kraj\n");
 
 	scanf("%c", &znak);
@@ -35,27 +40,31 @@ int main() {
 		switch (znak) {
 		case 'A':
 		case 'a':
-			people = AddAtBeggining(people);
+			head->next=AddAtBeggining(head->next);
 			break;
 		case 'B':
 		case 'b':
-			PrintList(people);
+			PrintList(head->next);
 			break;
 		case 'C':
 		case 'c':
-			people = AddAtEnd(people);
+			head->next=AddAtEnd(head->next);
 			break;
 		case 'D':
 		case 'd':
-			SearchBySurname(people);
+			SearchBySurname(head->next);
 			break;
 		case 'E':
 		case 'e':
-			Delete(people);
+			Delete(head);
 			break;
 		case 'G':
 		case 'g':
-			people=AddAfterSomeone(people);
+			head->next = AddAfterSomeone(head->next);
+			break;
+		case 'H':
+		case 'h':
+			head= AddBeforeSomeone(head);
 			break;
 
 
@@ -68,7 +77,8 @@ int main() {
 			"Unesi C za(dinamicki dodati novi element na kraj liste)\n"
 			"Unesi D za(trazenje element u listi (po prezimenu))\n"
 			"Unesi E za(brisanje odredenog elementa iz liste)\n"
-			"Unesi G za(dodavanje nakon nekog elementa)\n"
+			"Unesi G za(dodavanje nakon odredenog elementa)\n"
+			"Unesi H za(dodavanje nekog elementa prije odredenog)\n"
 			"Unesi F za kraj\n");
 
 		scanf(" %c", &znak);
@@ -76,8 +86,8 @@ int main() {
 
 	return 0;
 }
-osoba* AddAtBeggining(osoba* people) {
-	osoba* new = (osoba*)malloc(sizeof(osoba));
+osoba* AddAtBeggining(pozicija head) {
+	pozicija new = (osoba*)malloc(sizeof(osoba));
 	printf("Unesite Ime osobe\n");
 	scanf("%s", new->name);
 	printf("Unesite Prezime osobe\n");
@@ -85,12 +95,12 @@ osoba* AddAtBeggining(osoba* people) {
 	printf("Unesite Godiste osobe\n");
 	scanf("%d", &new->year);
 	new->next = NULL;
-	if (people == NULL) {
+	if (head == NULL) {
 		return new;
 	}
 	else {
 
-		new->next = people;
+		new->next = head;
 		return new;
 	}
 
@@ -105,12 +115,10 @@ void PrintList(osoba* people) {
 	}
 	printf("\n\n");
 }
-
-
-osoba* AddAtEnd(osoba* people) {
-
-	osoba* new = (osoba*)malloc(sizeof(osoba));
-	osoba* current = people;
+pozicija AddAtEnd(pozicija people) {
+	pozicija new = (osoba*)malloc(sizeof(osoba));
+	pozicija current = (osoba*)malloc(sizeof(osoba));
+	current = people;
 	printf("Unesite Ime osobe\n");
 	scanf("%s", new->name);
 	printf("Unesite Prezime osobe\n");
@@ -121,74 +129,57 @@ osoba* AddAtEnd(osoba* people) {
 	if (people == NULL) {
 		return new;
 	}
-
 	while (current->next != NULL) {
 		current = current->next;
-
 	}
 	current->next = new;
-
 	return people;
 }
-
 void SearchBySurname(osoba* people) {
-	if (people == NULL) {
-		printf("Lista je prazna");
-		return;
-	}
-
-	char prezime[MAX_SIZE];
-	printf("Unesite prezime koje trazimo\n");
-	scanf("%s", prezime);
-
-
+	char name[MAX_SIZE];
+	printf("\nupisi prezime koje zeelite naci:");
+	scanf("%s", name);
 	while (people != NULL) {
-		if (!strcmp(people->surname, prezime)) {
+		if (!strcmp(name, people->surname)) {
 			printf("%s %s %d\n", people->name, people->surname, people->year);
-
 		}
-
-
 		people = people->next;
 	}
 }
-
-void Delete(osoba* people) {
-	osoba* previous;
-	int indeks = 0;
-	int brojac = 0;
-	printf("Unesite redni broj clana kojeg zelite izbrisat\n");
-	scanf("%d", &indeks);
-	previous = people;
-
-	while (people != NULL) {
-		if (brojac == indeks) {
-			previous->next = people->next;
-			free(people);
+void Delete(osoba* previous)
+{
+	pozicija current;
+	current = previous->next;
+	char name[MAX_SIZE];
+	printf("\nupisi prezime koje zeelite naci:");
+	scanf("%s", name);
+	while (current != NULL) {
+		if (!strcmp(name, current->surname)) {
+			previous->next = current->next;
+			free(current);
 			return;
 		}
-		previous = people;
-		people = people->next;
-		brojac++;
+		current = current->next;
+		previous = previous->next;
+		
 	}
-	printf("Dali ste nepostojeci indeks\n");
 }
 osoba* AddAfterSomeone(osoba* people) {
 	osoba* new = (osoba*)malloc(sizeof(osoba));
 	osoba* all = people;
 	printf("unesi prezime iza kojega zelis unijeti novi clan:");
 	char temp[MAX_SIZE] = { 0 };
-	scanf("%s",temp);
-	printf("\n%s", temp);
-	printf("Unesite Ime osobe\n");
+	scanf("%s", temp);
+	
+	printf("\nUnesite Ime osobe");
 	scanf("%s", new->name);
 	printf("Unesite Prezime osobe\n");
 	scanf("%s", new->surname);
 	printf("Unesite Godiste osobe\n");
 	scanf("%d", &new->year);
 	while (people != NULL) {
-		if (strcmp(people->surname,temp)==0) {
-		
+		if (strcmp(people->surname, temp) == 0) {
+
 			new->next = people->next;
 			people->next = new;
 			return all;
@@ -198,8 +189,31 @@ osoba* AddAfterSomeone(osoba* people) {
 	}
 	printf("\nne potoji to prezime");
 	return all;
+}
+osoba* AddBeforeSomeone(osoba* current) {
+	pozicija all=current;
+	pozicija previous=current;
+	current = current->next;
+	pozicija new = (pozicija)malloc(sizeof(osoba));
+	printf("unesi prezime ispred kojega zelis unijeti novi clan:");
+	char temp[MAX_SIZE] = { 0 };
+	scanf("%s", temp);
 	
-
-
-
+	printf("\nUnesite Ime osobe");
+	scanf("%s", new->name);
+	printf("Unesite Prezime osobe\n");
+	scanf("%s", new->surname);
+	printf("Unesite Godiste osobe\n");
+	scanf("%d", &new->year);
+	while (current != NULL) {
+		if (strcmp(current->surname, temp) == 0) {
+			new->next = current;
+			previous->next = new;
+			return all;
+		}
+		current = current->next;
+		previous = previous->next;
+	}
+	printf("\nnije pronadeno to prezime");
+	return all;
 }
