@@ -19,6 +19,7 @@ void SearchBySurname(osoba* people);
 void Delete(osoba* people);
 osoba* AddAfterSomeone(osoba* people);
 osoba* AddBeforeSomeone(osoba* people);
+void upisUdatoteku(pozicija);
 
 int main() {
 	pozicija head = NULL;
@@ -32,6 +33,7 @@ int main() {
 		"Unesi E za(brisanje odredenog elementa iz liste)\n"
 		"Unesi G za(dodavanje nakon nekog elementa)\n"
 		"Unesi H za(dodavanje prije nekog odredenog)\n"
+		"Unesi J za(ispisivanje liste u file)\n"
 		"Unesi F za kraj\n");
 
 	scanf("%c", &znak);
@@ -66,6 +68,10 @@ int main() {
 		case 'h':
 			head= AddBeforeSomeone(head);
 			break;
+		case'J':
+		case 'j':
+			upisUdatoteku(head->next);
+
 
 
 		default:
@@ -79,6 +85,7 @@ int main() {
 			"Unesi E za(brisanje odredenog elementa iz liste)\n"
 			"Unesi G za(dodavanje nakon odredenog elementa)\n"
 			"Unesi H za(dodavanje nekog elementa prije odredenog)\n"
+			"Unesi J za(ispisivanje liste u file)\n"
 			"Unesi F za kraj\n");
 
 		scanf(" %c", &znak);
@@ -216,4 +223,15 @@ osoba* AddBeforeSomeone(osoba* current) {
 	}
 	printf("\nnije pronadeno to prezime");
 	return all;
+}
+void upisUdatoteku(pozicija people) {
+	FILE* fp;
+	fp = fopen("osoba", "w");
+	while (people != NULL)
+	{
+		fprintf(fp, "ime:%s prezime:%s godina rodenja:%d\n", people->name, people->surname, people->year);
+		people = people->next;
+	}
+	fclose(fp);
+
 }
