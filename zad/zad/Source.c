@@ -12,27 +12,38 @@ struct _polinom {
 	pozicija next;
 };
 int readFile(pozicija, char* );
-int sortedInput(pozicija,int, int);
 int unos(pozicija, int, int);
 pozicija dodajHead();
 int IspisPolinoma(pozicija);
+pozicija zbrajanjePolinoma(pozicija, pozicija);
+int DodajNaKraj(pozicija , int , int);
+pozicija mnozenjePolinoma(pozicija, pozicija);
 
 
 int main() {
 
 	pozicija head1 = NULL;
 	pozicija head2 = NULL;
+	pozicija zbroj = NULL;
+	pozicija umnozakk = NULL;
 	head1 = dodajHead();
 	head2 = dodajHead();
+	zbroj = dodajHead();
 	char* imeDatoteke1 = "polinom.txt"; 
 	char* imeDatoteke2 = "polinom1.txt";
 	readFile(head1,imeDatoteke1);
 	IspisPolinoma(head1);
 	readFile(head2, imeDatoteke2);
 	IspisPolinoma(head2);
+	zbroj = zbrajanjePolinoma(head1->next, head2->next);
+	IspisPolinoma(zbroj);
+	umnozakk = mnozenjePolinoma(head1->next, head2->next);
+	IspisPolinoma(umnozakk);
+
 	
 
-
+	fclose(imeDatoteke1);
+	fclose(imeDatoteke2);
 
 	return 0;
 }
@@ -61,7 +72,7 @@ int readFile(pozicija pol, char* imeDatoteke)
 		buf = buf + br;
 		
 	}
-	
+
 
 	return 0;
 }
@@ -139,4 +150,78 @@ int IspisPolinoma(pozicija head) {
 	}
 
 	return 0;
+}
+pozicija zbrajanjePolinoma(pozicija p1, pozicija p2) {
+	pozicija zbroj = NULL;
+	zbroj = dodajHead();
+	if (zbroj == NULL) {
+		printf("\nGreska u alociranju memorije!");
+		return -1;
+	}
+	while (p1 != NULL && p2 != NULL) {
+
+		if (p1->pot == p2->pot) {
+			DodajNaKraj(zbroj, p1->koef + p2->koef, p1->pot);
+			p1 = p1->next;
+			p2 = p2->next;
+		}
+
+		else if (p1->pot > p2->pot) {
+			DodajNaKraj(zbroj, p1->koef, p1->pot);
+			p1 = p1->next;
+		}
+
+		else if (p1->pot < p2->pot) {
+			DodajNaKraj(zbroj, p2->koef, p2->pot);
+			p2 = p2->next;
+		}
+	}
+
+	while (p1 != NULL) {
+		DodajNaKraj(zbroj, p1->koef, p1->pot);
+		p1 = p1->next;
+	}
+
+	while (p2 != NULL) {
+		DodajNaKraj(zbroj, p2->koef, p2->pot);
+		p2 = p2->next;
+	}
+
+	return zbroj;
+}
+int DodajNaKraj(pozicija zbroj, int koef, int pot) {
+	pozicija p = zbroj;
+	pozicija q = NULL;
+	while (p->next != NULL) {
+		p = p->next;
+	}
+	q = (pozicija)malloc(sizeof(polinom));
+	if (q == NULL) {
+		printf("\nGreska u alociranju memorije!");
+		return -1;
+	}
+	q->koef = koef;
+	q->pot = pot;
+	q->next = p->next;
+	p->next = q;
+	return 0;
+
+}
+pozicija mnozenjePolinoma(pozicija p1, pozicija p2) {
+	pozicija umnozak = NULL;
+	umnozak = dodajHead();
+	if (umnozak == NULL) {
+		printf("\nGreska u alociranju memorije!");
+		return -1;
+	}
+	pozicija p22 = p2;
+	while (p1 != NULL) {
+		while (p2 != NULL) {
+			unos(umnozak, p1->koef * p2->koef, p1->pot + p2->pot);
+			p2 = p2->next;
+		}
+		p1 = p1->next;
+		p2 = p22;
+	}
+	return umnozak;
 }
