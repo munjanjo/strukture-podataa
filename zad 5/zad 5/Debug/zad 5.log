@@ -1,0 +1,9 @@
+﻿  Source.c
+C:\Users\38595\Desktop\zad 5\zad 5\Source.c(38,12): warning C4047: 'return': 'pozicija' differs in levels of indirection from 'int'
+C:\Users\38595\Desktop\zad 5\zad 5\Source.c(70,12): warning C4133: 'function': incompatible types - from 'char *' to 'FILE *'
+C:\Users\38595\Desktop\zad 5\zad 5\Source.c(80,12): warning C4098: 'dodajNaStog': 'void' function returning a value
+C:\Users\38595\Desktop\zad 5\zad 5\Source.c(86,10): warning C4098: 'dodajNaStog': 'void' function returning a value
+C:\Users\38595\Desktop\zad 5\zad 5\Source.c(114,13): warning C4098: 'uzmiSaStoga': 'void' function returning a value
+C:\Users\38595\Desktop\zad 5\zad 5\Source.c(129,10): warning C4098: 'uzmiSaStoga': 'void' function returning a value
+C:\Users\38595\Desktop\zad 5\zad 5\Source.c(140,10): warning C4098: 'ispisRezultata': 'void' function returning a value
+C:\Users\38595\Desktop\zad 5\zad 5\Source.c(150,10): warning C4098: 'brisiSve': 'void' function returning a value
