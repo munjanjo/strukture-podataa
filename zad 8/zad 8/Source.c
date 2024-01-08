@@ -1,4 +1,3 @@
-﻿
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <stdio.h>
@@ -20,6 +19,9 @@ pozicija unosElementa(pozicija, pozicija);
 int inorder(pozicija);
 int preorder(pozicija);
 int postorder(pozicija);
+pozicija izbrisi(pozicija, int);
+pozicija nadjiMax(pozicija);
+pozicija nadjiMin(pozicija);
 
 
 int main()
@@ -38,7 +40,8 @@ int main()
         printf("\n2) Ispis stabla (inorder)");
         printf("\n3) Ispis stabla (preorder)");
         printf("\n4) Ispis stabla (postorder)");
-        printf("\n5) exit!");
+        printf("\n5) exit!");  
+        printf("\n6) brisanje elementa");
         printf("\nOdaberite operaciju: ");
         scanf("%d", &operacija);
         switch (operacija)
@@ -63,10 +66,14 @@ int main()
             break;
         case 5:
             return 0;
-
+        case 6:
+            printf("\nKoji element zelis izbrisati:");
+            scanf("%d", &brEl);
+            root = izbrisi(root, brEl);
+                
 
         }
-        
+
 
     }
 
@@ -75,7 +82,7 @@ int main()
 pozicija createStruct(pozicija p) {
     p = (pozicija)malloc(sizeof(stablo));
     if (p == NULL) {
-        printf("Kiro allociranje memorije ");
+        printf("Kirvo allociranje memorije ");
         return -1;
 
     }
@@ -98,7 +105,7 @@ pozicija unosElementa(pozicija p, pozicija q) {
         free(q);
     }
     return p;
-       
+
 }
 int inorder(pozicija p) {
     if (p != NULL) {
@@ -110,10 +117,10 @@ int inorder(pozicija p) {
     return 0;
 }
 int preorder(pozicija p) {
-    if (p != NULL) { 
+    if (p != NULL) {
         printf("%d ", p->broj);
         inorder(p->lijevo);
-       
+
         inorder(p->desno);
 
     }
@@ -128,5 +135,51 @@ int postorder(pozicija p) {
     }
     return 0;
 }
+pozicija izbrisi(pozicija p, int br) {
+    if (p == NULL)
+        return 0;
+    if (p->broj < br)
+    {
+        p->desno = izbrisi(p->desno, br);
+    }
+    else if (p->broj > br) {
+        p->lijevo = izbrisi(p->lijevo, br);
+    }
+    else {
+        if (p->lijevo) {
+            pozicija tmp = nadjiMax(p->lijevo);
+            p->broj = tmp->broj;
+            p->lijevo = izbrisi(p->lijevo, tmp->broj);
+        }
+        else if (p->desno)
+        {
+            pozicija tmp = nadjiMin(p->desno);
+            p->broj = tmp->broj;
+            p->desno = izbrisi(p->lijevo, tmp->broj);
+        }
+        else {
+            free(p);
+            return 0;
+        }
+    }
+    return p;
+}
+pozicija nadjiMax(pozicija p)
+{
+    pozicija tmp = p;
 
+    while (tmp->desno != NULL)
+        tmp = tmp->desno;
 
+    return tmp;
+}
+
+pozicija nadjiMin(pozicija p)
+{
+    pozicija tmp = p;
+
+    while (tmp->lijevo != NULL)
+        tmp = tmp->lijevo;
+
+    return tmp;
+}
