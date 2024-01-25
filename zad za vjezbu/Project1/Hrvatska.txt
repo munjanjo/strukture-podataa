@@ -1,3 +1,0 @@
-split 150000
-zagreb 600000
-rijeka -1

@@ -1,3 +1,0 @@
-Beograd 1000000
-Subotica 200000
-Niš 15000
